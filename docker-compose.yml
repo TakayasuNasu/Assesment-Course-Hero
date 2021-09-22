@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  app:
+    image: node:15.14-alpine
+    container_name: ts
+    volumes:
+      - ./:/home/app
+      - modules:/home/app/node_modules
+    working_dir: /home/app
+    command: [sh, -c, yarn install && sh]
+    ports:
+      - '3000:3000'
+    stdin_open: true
+
+volumes:
+  modules:

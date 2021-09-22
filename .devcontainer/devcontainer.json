@@ -1,0 +1,12 @@
+{
+  "name": "boilerplate",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "app",
+  "workspaceFolder": "/home/app",
+  "extensions": [
+    "esbenp.prettier-vscode",
+    "oderwat.indent-rainbow",
+    "arjun.swagger-viewer"
+  ],
+  "shutdownAction": "none"
+}
