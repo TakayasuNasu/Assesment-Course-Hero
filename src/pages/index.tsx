@@ -26,6 +26,14 @@ const Section = styled.section`
   div.input {
     width: 80%;
   }
+  div.summary {
+    background-color: blue;
+    p {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+  }
   ul.ul {
     display: grid;
     grid-row-gap: 12px;
@@ -34,15 +42,32 @@ const Section = styled.section`
 
 const canSeparate = (input: any) => {
   const words = input.split(' ')
-  if (words.length < 2) {
+  if (words.length < 2 || words.length > 4) {
     return false
   } else {
     return true
   }
 }
 
-const validCase2 = (input: string) => {
-  const result = /([0-9].*[a-zA-Z]|[a-zA-Z].*[0-9])/.test(input)
+const validCase2 = (input: string[]) => {
+  const f = input[0]
+  const s = input[1]
+  const result = /([0-9].*[a-zA-Z]|[a-zA-Z].*[0-9])/.test(f)
+
+  const splitString = splitFilter(s)
+  const l = splitString[0]
+  const r = splitString[1]
+  if (/^[a-z]+$/i.test(l)) {
+    return isSemester(l)
+  } else {
+    if (!correctYear(l)) return false
+  }
+
+  if (/^[a-z]+$/i.test(r)) {
+    return isSemester(r)
+  } else {
+    if (!correctYear(r)) return false
+  }
   return result
 }
 
@@ -132,7 +157,7 @@ const divideer = (input: string[]) => {
   let result = true
   switch (input.length) {
     case 2:
-      result = validCase2(input[0])
+      result = validCase2(input)
       break
     case 3:
       result = validCase3(input)
@@ -288,6 +313,7 @@ const Home: FC = () => {
 
   const handleInput = (e: any) => {
     const text = e.target.value
+    setInput(text)
     if (!canSeparate(text)) {
       setError(true)
       return
@@ -297,7 +323,6 @@ const Home: FC = () => {
       setError(true)
       return
     }
-    setInput(text)
     setError(false)
   }
 
@@ -315,7 +340,7 @@ const Home: FC = () => {
   const StudentList = students.map((s: Student, i: number) => {
     return (
       <Accordion key={i}>
-        <AccordionSummary>
+        <AccordionSummary className="summary">
           <p>
             {s.department} {s.courseNumber}
           </p>
@@ -340,9 +365,9 @@ const Home: FC = () => {
           className="input"
           error={error}
           helperText={message}
-          variant="filled"
+          variant="outlined"
           onChange={handleInput}
-          defaultValue={input}
+          value={input}
         />
         <Button onClick={handleClick} variant="outlined" size="large" disabled={error}>
           Submit
