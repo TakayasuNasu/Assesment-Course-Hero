@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate",
+  "name": "course-hero",
   "dockerComposeFile": ["../docker-compose.yml"],
   "service": "app",
   "workspaceFolder": "/home/app",
